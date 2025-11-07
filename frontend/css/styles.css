@@ -1,0 +1,121 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 1em;
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    clear: both;
+    width: 100%;
+    background-color: darkblue;
+    color: antiquewhite;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+}
+
+header {
+    clear: both;
+    width: 100%;
+    background-color: darkblue;
+    color: antiquewhite;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 0px;
+}
+
+h2 {
+    font-size: 2em;
+    color: darkblue;
+    margin: 10px;
+}
+
+form {
+    padding: 25px;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: darkblue;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+section {
+    margin: 2em 0;
+    padding: 1.5em;
+    border-radius: 10px;
+    background: #f5f7fa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.user-info {
+    color: antiquewhite;
+}
+
+.error {
+    color: red;
+    margin: 10px 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}

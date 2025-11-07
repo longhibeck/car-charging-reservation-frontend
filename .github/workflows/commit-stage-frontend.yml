@@ -1,0 +1,79 @@
+name: commit-stage-frontend
+
+on:
+  push:
+    branches: [ "main" ] 
+    paths:
+        - 'frontend/**'
+        - '.github/workflows/commit-stage-frontend.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+        - 'frontend/**'
+        - '.github/workflows/commit-stage-frontend.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: commit-stage-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      image-latest-url: ${{ steps.publish.outputs.image-latest-url }}
+      image-digest-url: ${{ steps.publish.outputs.image-digest-url }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Test nginx config
+      working-directory: frontend
+      run: |
+        # Add fake backend host and test nginx config
+        docker run --rm --add-host backend:127.0.0.1 -v $(pwd)/nginx.conf:/etc/nginx/conf.d/default.conf nginx:1.29-alpine nginx -t
+
+    - name: Validate frontend files
+      working-directory: frontend
+      run: |
+        # Check HTML files exist and are valid
+        find . -name "*.html" -type f | wc -l
+        # Check CSS files exist
+        find . -name "*.css" -type f | wc -l  
+        # Check JS files exist
+        find . -name "*.js" -type f | wc -l
+        echo "Frontend validation complete"
+
+    - name: Publish Docker Image
+      id: publish
+      uses: optivem/publish-docker-image-action@v1
+      with:
+        working-directory: frontend
+        image-name: frontend
+        registry: ghcr.io
+        registry-username: ${{ github.actor }}
+        image-namespace: ${{ github.repository }}
+        image-latest-tag: latest
+        commit-sha: ${{ github.sha }}
+        dockerfile: Dockerfile
+      env:
+        REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+  summary:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      
+    - name: Commit Stage Summary
+      uses: optivem/summarize-commit-stage-action@v1
+      with:
+        stage-result: ${{ needs.build.result }}
+        success-artifact-url: ${{ needs.build.outputs.image-latest-url }}

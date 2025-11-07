@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Charging Reservation System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Car Charging Reservation System</h1>
+        </div>
+        <div id="user-info" style="display: none;" class="user-info">
+            <span>Logged in as <span id="username-display"></span></span>
+            <button data-action="logout" style="margin-left: 10px;">Logout</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Error display -->
+        <div id="error-message" class="error" style="display: none;"></div>
+
+        <!-- Login Page -->
+        <div id="page-login" class="page">
+            <section>
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div>
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">
+                        <span class="submit-text">Login</span>
+                        <span class="loading-text" style="display: none;">Logging in...</span>
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="page-dashboard" class="page" style="display: none;">
+            <section>
+                <h2>Your Reservations</h2>
+                <p>No reservations yet.</p>
+            </section>
+            <section>
+                <h2>Your Cars</h2>
+                <div id="dashboard-cars">
+                    <p>Loading cars...</p>
+                </div>
+                <button data-nav="cars">View All</button>
+            </section>
+        </div>
+
+        <!-- Cars Page -->
+        <div id="page-cars" class="page" style="display: none;">
+            <h2>Your Cars</h2>
+            <div id="no-cars">
+                <p>No cars yet.</p>
+            </div>
+            <div id="cars-list" style="display: none;">
+                <table id="cars-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Connectors</th>
+                            <th>Battery Charge Limit (%)</th>
+                            <th>Battery Size (kWh)</th>
+                            <th>Max kW AC</th>
+                            <th>Max kW DC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cars-table-body">
+                        <!-- Cars will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <button data-nav="add-car">Add Car</button>
+            <button data-nav="dashboard">Back to Dashboard</button>
+        </div>
+
+        <!-- Add Car Page -->
+        <div id="page-add-car" class="page" style="display: none;">
+            <h2>Add Car</h2>
+            <form id="add-car-form">
+                <div>
+                    <label for="car-name">Car Name:</label>
+                    <input type="text" id="car-name" name="name" required>
+                </div>
+                
+                <div>
+                    <label>Connector Types:</label>
+                    <div>
+                        <input type="checkbox" id="connector-TYPE_2" name="connector_types" value="TYPE_2">
+                        <label for="connector-TYPE_2">TYPE_2</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="connector-SCHUCO" name="connector_types" value="SCHUCO">
+                        <label for="connector-SCHUCO">SCHUCO</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="connector-CCS" name="connector_types" value="CCS">
+                        <label for="connector-CCS">CCS</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="connector-CHADEMO" name="connector_types" value="CHADEMO">
+                        <label for="connector-CHADEMO">CHADEMO</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="battery-charge-limit">Battery Charge Limit (%):</label>
+                    <input type="number" id="battery-charge-limit" name="battery_charge_limit" min="1" max="100" value="80" required>
+                </div>
+
+                <div>
+                    <label for="battery-size">Battery Size (kWh):</label>
+                    <input type="number" id="battery-size" name="battery_size" min="1" value="50" required>
+                </div>
+
+                <div>
+                    <label for="max-kw-ac">Max kW AC:</label>
+                    <input type="number" id="max-kw-ac" name="max_kw_ac" min="1" value="11" required>
+                </div>
+
+                <div>
+                    <label for="max-kw-dc">Max kW DC:</label>
+                    <input type="number" id="max-kw-dc" name="max_kw_dc" min="1" value="50" required>
+                </div>
+
+                <button type="submit">
+                    <span class="submit-text">Add Car</span>
+                    <span class="loading-text" style="display: none;">Adding...</span>
+                </button>
+                <button type="button" data-nav="cars">Cancel</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>ATTD Accelerator Sandbox Project</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

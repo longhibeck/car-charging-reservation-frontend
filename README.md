@@ -4,7 +4,7 @@
 
 ## Root Repository
 
-- [Car Charging Reservation System](https://github.com/optivem/atdd-accelerator-template-multi-repo)
+- [Car Charging Reservation System](https://github.com/longhibeck/car-charging-reservation-system)
 
 ## License
 

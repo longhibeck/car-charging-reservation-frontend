@@ -107,7 +107,7 @@ class CarApp {
 
             if (response.ok) {
                 const data = await response.json();
-                this.cars = data.cars || [];
+                this.cars = data;
                 this.renderCars();
             }
         } catch (error) {

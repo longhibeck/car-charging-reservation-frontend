@@ -9,8 +9,8 @@ class CarApp {
     }
 
     init() {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const access_token = localStorage.getItem('access_token');
+        if (access_token) {
             this.checkAuthStatus();
         } else {
             this.showPage('login');
@@ -83,7 +83,7 @@ class CarApp {
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem('token', data.token);
+                localStorage.setItem('access_token', data.access_token);
                 this.user = data.user;
                 this.showPage('dashboard');
             } else {
@@ -97,12 +97,12 @@ class CarApp {
     }
 
     async loadCars() {
-        const token = localStorage.getItem('token');
-        if (!token) return;
+        const access_token = localStorage.getItem('access_token');
+        if (!access_token) return;
 
         try {
             const response = await fetch('/api/v1/cars/', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 'Authorization': `Bearer ${access_token}` }
             });
 
             if (response.ok) {
@@ -174,7 +174,7 @@ class CarApp {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 body: JSON.stringify(carData)
             });
@@ -193,22 +193,22 @@ class CarApp {
     }
 
     logout() {
-        localStorage.removeItem('token');
+        localStorage.removeItem('access_token');
         this.user = null;
         this.cars = [];
         this.showPage('login');
     }
 
     async checkAuthStatus() {
-        const token = localStorage.getItem('token');
-        if (!token) {
+        const access_token = localStorage.getItem('access_token');
+        if (!access_token) {
             this.showPage('login');
             return;
         }
 
         try {
             const response = await fetch('/api/v1/auth/me', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 'Authorization': `Bearer ${access_token}` }
             });
 
             if (response.ok) {

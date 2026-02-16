@@ -86,6 +86,8 @@ class CarApp {
                 localStorage.setItem('access_token', data.access_token);
                 this.user = data.user;
                 this.showPage('dashboard');
+            } else if (response.status === 401) {
+                this.showError('Invalid credentials');
             } else {
                 this.showError('Login failed');
             }
@@ -152,23 +154,67 @@ class CarApp {
         }
     }
 
+    validateIntegerInput(value, min, max) {
+        if (value < min) {
+            return `Input should be greater than ${min - 1}`;
+        }
+        if (max !== null && value > max) {
+            return `Input should be less than or equal to ${max}`;
+        }
+        return null;
+    }
+
     async addCar() {
-        this.setLoading(true);
         const formData = new FormData(document.getElementById('add-car-form'));
         
         // Get checked connector types
         const connectorTypes = Array.from(document.querySelectorAll('input[name="connector_types"]:checked'))
             .map(cb => cb.value);
 
+        // Validate inputs
+        const batteryChargeLimit = parseInt(formData.get('battery_charge_limit'));
+        const batterySize = parseInt(formData.get('battery_size'));
+        const maxKwAc = parseInt(formData.get('max_kw_ac'));
+        const maxKwDc = parseInt(formData.get('max_kw_dc'));
+
+        // Check battery charge limit (1-100)
+        let error = this.validateIntegerInput(batteryChargeLimit, 1, 100);
+        if (error) {
+            this.showError(error);
+            return;
+        }
+
+        // Check battery size (min 1, no max)
+        error = this.validateIntegerInput(batterySize, 1, null);
+        if (error) {
+            this.showError(error);
+            return;
+        }
+
+        // Check max kW AC (min 1, no max)
+        error = this.validateIntegerInput(maxKwAc, 1, null);
+        if (error) {
+            this.showError(error);
+            return;
+        }
+
+        // Check max kW DC (min 1, no max)
+        error = this.validateIntegerInput(maxKwDc, 1, null);
+        if (error) {
+            this.showError(error);
+            return;
+        }
+
         const carData = {
             name: formData.get('name'),
             connector_types: connectorTypes,
-            battery_charge_limit: parseInt(formData.get('battery_charge_limit')),
-            battery_size: parseInt(formData.get('battery_size')),
-            max_kw_ac: parseInt(formData.get('max_kw_ac')),
-            max_kw_dc: parseInt(formData.get('max_kw_dc'))
+            battery_charge_limit: batteryChargeLimit,
+            battery_size: batterySize,
+            max_kw_ac: maxKwAc,
+            max_kw_dc: maxKwDc
         };
 
+        this.setLoading(true);
         try {
             const response = await fetch('/api/v1/cars/', {
                 method: 'POST',

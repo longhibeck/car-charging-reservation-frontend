@@ -141,9 +141,9 @@ class CarApp {
                 document.getElementById('no-cars').style.display = 'none';
                 
                 carsTable.innerHTML = this.cars.map(car => `
-                    <tr>
+                    <tr data-testid="car-row" data-car-id="${car.id}">
                         <td data-testid="car-name">${car.name}</td>
-                        <td data-testid="car-connectors">${car.connectors?.map(c => c.type?.value || c.type).join(', ') || '-'}</td>
+                        <td data-testid="car-connectors">${(car.connector_types || []).join(', ') || '-'}</td>
                         <td data-testid="car-battery-limit">${car.battery_charge_limit}</td>
                         <td data-testid="car-battery-size">${car.battery_size}</td>
                         <td data-testid="car-max-kw-ac">${car.max_kw_ac}</td>
